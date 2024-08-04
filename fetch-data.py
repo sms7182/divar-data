@@ -45,4 +45,4 @@ while True:
             lst=slash_sub[len(slash_sub)-1]
             ids=str.split(lst,'.')
             insert_detail(ids[0],token,ns)
-    time.sleep(1)    
+    time.sleep(0.8)
