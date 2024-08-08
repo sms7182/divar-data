@@ -72,7 +72,7 @@ def insert_detail(id,token,tm):
         print(title+"**"+type+"**"+str(latitude)+"**"+str(longitude)+"**"+text)
         
         # sql="insert into divar_detail(id,title,type,text,token,creation_date,geog) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(-110 30)')"
-        sql="insert into divar_detail(id,title,type,text,token,creation_date,geog) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(51.181689295918 35.694553735887)');"
+        sql="insert into divar_detail(id,title,type,text,token,creation_date,geog) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(%s %s)');"
       
 
         now=datetime.now()
@@ -81,7 +81,7 @@ def insert_detail(id,token,tm):
             print(date)
             ids=str(uuid.uuid4())
             # sql="insert into divar_widget(id,token,creation_date) values(%s,'dd',%s)"
-            cursor.execute(sql,(ids,title,type,text,token,date))
+            cursor.execute(sql,(ids,title,type,text,token,date,longitude,latitude))
             # cursor.execute(sql,(id))#,title,type,text,token,date)
             cursor.connection.commit()
         except Exception:
