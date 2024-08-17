@@ -25,7 +25,7 @@ def insert_detail(id,token,tm):
     cursor.connection.commit()
     detail_url=detail_url+token
     x=requests.get(detail_url)
-    
+    detail_title=''
     if x.text=="":
         return
     try:
@@ -69,10 +69,17 @@ def insert_detail(id,token,tm):
                                     title=pmd['title']
                                     break
                         break
-        print(title+"**"+type+"**"+str(latitude)+"**"+str(longitude)+"**"+text)
+                if dt['section_name']=="TITLE":
+                    for mdt in dt['widgets']:
+                        if mdt['widget_type'] == 'LEGEND_TITLE_ROW':
+                            if mdt['data'] is not None:
+                                if mdt['data']['title'] is not None:
+                                    detail_title=mdt['data']['title']
+                                    print(detail_title)
+        # print(title+"**"+type+"**"+str(latitude)+"**"+str(longitude)+"**"+text)
         
         # sql="insert into divar_detail(id,title,type,text,token,creation_date,geog) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(-110 30)')"
-        sql="insert into divar_detail(id,title,type,text,token,creation_date,geog) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(%s %s)');"
+        sql="insert into divar_detail(id,title,type,text,token,creation_date,geog,detail_title) values(%s,%s,%s,%s,%s,%s,'SRID=4326;POINT(%s %s)',%s);"
       
 
         now=datetime.now()
@@ -81,7 +88,7 @@ def insert_detail(id,token,tm):
             print(date)
             ids=str(uuid.uuid4())
             # sql="insert into divar_widget(id,token,creation_date) values(%s,'dd',%s)"
-            cursor.execute(sql,(ids,title,type,text,token,date,longitude,latitude))
+            cursor.execute(sql,(ids,title,type,text,token,date,longitude,latitude,detail_title))
             # cursor.execute(sql,(id))#,title,type,text,token,date)
             cursor.connection.commit()
         except Exception:
